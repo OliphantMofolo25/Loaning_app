@@ -166,7 +166,7 @@ const PreApprovalPage = () => {
         employmentStatus: formData.employment.toLowerCase() // Ensure lowercase
       };
 
-      const response = await fetch('http://localhost:3001/api/loans', {
+      const response = await fetch('https://backend-credit.onrender.com/api/loans', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

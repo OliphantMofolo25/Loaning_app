@@ -86,7 +86,7 @@ const UserServicesPage = () => {
         // Simulate API delay for demo purposes
         await new Promise(resolve => setTimeout(resolve, 800));
 
-        const response = await fetch('http://localhost:3001/api/auth/profile', {
+        const response = await fetch('https://backend-credit.onrender.com/api/auth/profile', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'

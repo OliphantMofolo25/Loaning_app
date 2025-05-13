@@ -18,7 +18,7 @@ import axios from 'axios';
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
 
-const API_BASE_URL = 'http://localhost:3001';
+const API_BASE_URL = 'https://backend-credit.onrender.com';
 
 const formatCurrency = (amount) => {
   if (isNaN(amount)) return 'M0.00';
@@ -63,7 +63,7 @@ const CreditReportPage = () => {
       try {
         setLoading(true);
         setError(null);
-        const response = await axios.get(`${API_BASE_URL}/api/loans/credit-report`, {
+        const response = await axios.get(`https://backend-credit.onrender.com/api/loans/credit-report`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
 

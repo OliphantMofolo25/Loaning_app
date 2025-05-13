@@ -12,7 +12,7 @@ import PaymentHistory from './PaymentHistory';
 import MakePayment from './MakePayment';
 import PaymentMethods from './PaymentMethods';
 
-const API_BASE_URL = 'http://localhost:3001';
+const API_BASE_URL = 'https://backend-credit.onrender.com';
 
 const PaymentServicesPage = () => {
   const navigate = useNavigate();
