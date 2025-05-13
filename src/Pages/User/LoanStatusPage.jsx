@@ -34,7 +34,7 @@ const LoanStatusPage = () => {
         throw new Error('Authentication required');
       }
 
-      const response = await fetch('http://localhost:3001/api/loans/my-loans', {
+      const response = await fetch('https://backend-credit.onrender.com/api/loans/my-loans', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
