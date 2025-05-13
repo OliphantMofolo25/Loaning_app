@@ -1,0 +1,37 @@
+.payment-history-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Responsive table */
+@media (max-width: 768px) {
+  .payment-history-container {
+    padding: 10px;
+  }
+  
+  /* Add horizontal scroll for small screens */
+  .MuiTableContainer-root {
+    overflow-x: auto;
+  }
+}
+
+/* Status chips */
+.MuiChip-root {
+  margin: 2px;
+}
+
+/* Expandable row details */
+.loan-details {
+  background-color: #f9f9f9;
+}
+
+/* Loading spinner */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.MuiCircularProgress-root {
+  animation: spin 1s linear infinite;
+}

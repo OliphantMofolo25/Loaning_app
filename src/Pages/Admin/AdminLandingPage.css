@@ -1,0 +1,162 @@
+/* AdminLandingPage.css */
+
+/* Base styles for dark theme */
+.admin-container {
+    background-color: #121212;
+    color: #e0e0e0;
+    min-height: 100vh;
+    transition: all 0.3s ease;
+  }
+  
+  /* Header enhancements */
+  .admin-header {
+    background: linear-gradient(135deg, #1a1a1a 0%, #121212 100%);
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .admin-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #1976d2 0%, #4caf50 50%, #ff9800 100%);
+  }
+  
+  /* Feature cards styling */
+  .admin-feature-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 8px !important;
+    cursor: pointer;
+  }
+  
+  .admin-feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3) !important;
+  }
+  
+  /* Stats cards styling */
+  .admin-stat-card {
+    border-radius: 8px !important;
+    transition: all 0.3s ease;
+  }
+  
+  .admin-stat-card:hover {
+    transform: scale(1.03);
+  }
+  
+  /* Typography enhancements */
+  .admin-title {
+    font-weight: 700 !important;
+    letter-spacing: 0.5px !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  .admin-subtitle {
+    opacity: 0.9;
+    font-weight: 300 !important;
+  }
+  
+  /* Button styling */
+  .admin-primary-btn {
+    font-weight: 600 !important;
+    letter-spacing: 0.5px !important;
+    padding: 12px 28px !important;
+    border-radius: 8px !important;
+    text-transform: none !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.3s ease !important;
+  }
+  
+  .admin-primary-btn:hover {
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2) !important;
+    transform: translateY(-2px);
+  }
+  
+  /* Divider styling */
+  .admin-divider {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+  }
+  
+  /* Icon styling */
+  .admin-icon {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 900px) {
+    .admin-header {
+      padding-top: 6rem !important;
+      padding-bottom: 6rem !important;
+    }
+    
+    .admin-title {
+      font-size: 2.5rem !important;
+    }
+    
+    .admin-subtitle {
+      font-size: 1.2rem !important;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .admin-header {
+      padding-top: 4rem !important;
+      padding-bottom: 4rem !important;
+    }
+    
+    .admin-title {
+      font-size: 2rem !important;
+    }
+    
+    .admin-feature-card {
+      margin-bottom: 1rem;
+    }
+    
+    .admin-stat-card {
+      margin-bottom: 1rem;
+    }
+  }
+  
+  /* Animation for subtle effects */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .admin-animate {
+    animation: fadeIn 0.6s ease forwards;
+  }
+  
+  .delay-1 {
+    animation-delay: 0.1s;
+  }
+  
+  .delay-2 {
+    animation-delay: 0.2s;
+  }
+  
+  .delay-3 {
+    animation-delay: 0.3s;
+  }
+  
+  /* Scrollbar styling (for browsers that support it) */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #1e1e1e;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
