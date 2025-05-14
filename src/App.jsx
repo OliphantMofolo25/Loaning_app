@@ -74,23 +74,19 @@ const App = () => {
           <Route path="/admin/login" element={<AdminLoginPage />} />
           <Route path="/admin/signup" element={<AdminSignupPage />} />
 
-          {/* User Protected Routes */}
-          <Route element={<ProtectedRoute allowedRoles={['user', 'premium', 'admin']} redirectPath="/login" />}>
-            <Route path="/services" element={<UserServicesPage />} />
-            <Route path="/services/credit-report" element={<CreditReportPage />} />
-            <Route path="/services/credit-score" element={<CreditScoreAnalysisPage />} />
-            <Route path="/services/loan-offers" element={<LoanServicesPage />} />
-            <Route path="/services/loan-calculator" element={<LoanCalculatorPage />} />
-            <Route path="/services/loan-status" element={<LoanStatusPage />} />
-            <Route path="/services/loan-status/:id" element={<LoanStatusPage />} />
-            <Route path="/services/pre-approval" element={<PreApprovalPage />} />
-            <Route path="/services/payment" element={<PaymentServicesPage />} /> {/* New route */}
-          </Route>
+          {/* User Routes - No role checking */}
+          <Route path="/services" element={<UserServicesPage />} />
+          <Route path="/services/credit-report" element={<CreditReportPage />} />
+          <Route path="/services/credit-score" element={<CreditScoreAnalysisPage />} />
+          <Route path="/services/loan-offers" element={<LoanServicesPage />} />
+          <Route path="/services/loan-calculator" element={<LoanCalculatorPage />} />
+          <Route path="/services/loan-status" element={<LoanStatusPage />} />
+          <Route path="/services/loan-status/:id" element={<LoanStatusPage />} />
+          <Route path="/services/pre-approval" element={<PreApprovalPage />} />
+          <Route path="/services/payment" element={<PaymentServicesPage />} /> {/* New route */}
 
-          {/* Admin Protected Routes */}
-          <Route element={<ProtectedRoute allowedRoles={['admin']} redirectPath="/admin/login" />}>
-            <Route path="/admin/dashboard" element={<AdminLandingPage />} />
-          </Route>
+          {/* Admin Routes */}
+          <Route path="/admin/dashboard" element={<AdminLandingPage />} />
 
           {/* Fallback Route */}
           <Route path="*" element={<Navigate to="/" replace />} />
