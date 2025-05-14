@@ -45,12 +45,10 @@ const LandingPage = () => {
   const userData = JSON.parse(localStorage.getItem('userData'));
 
   const handleAdminButtonClick = () => {
-    if (userData?.role === 'admin') {
-      navigate('/admin/dashboard');
-    } else {
-      navigate('/admin/login');
-    }
-  };
+  // Simply navigate to the admin dashboard or login page
+  navigate('/admin/dashboard');
+};
+
 
   const features = [
     {
