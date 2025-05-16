@@ -3,7 +3,7 @@ import {
   Box, Typography, Grid, Card, Container,
   Button, Paper, CircularProgress,
   Chip, Avatar, Stack, Divider, Tooltip,
-  Fade, Grow, Slide, Zoom
+  Fade, Grow, Slide, Zoom, useTheme
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -63,6 +63,7 @@ const SERVICES = [
 ];
 
 const UserServicesPage = () => {
+  const theme = useTheme();
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -133,7 +134,7 @@ const UserServicesPage = () => {
         justifyContent: 'center', 
         alignItems: 'center', 
         height: '80vh',
-        background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)'
+        bgcolor: 'background.default'
       }}>
         <motion.div
           animate={{ 
@@ -146,7 +147,7 @@ const UserServicesPage = () => {
             ease: "easeInOut"
           }}
         >
-          <CircularProgress size={60} thickness={4} sx={{ color: '#4CAF50' }} />
+          <CircularProgress size={60} thickness={4} sx={{ color: 'primary.main' }} />
         </motion.div>
       </Box>
     );
@@ -155,7 +156,7 @@ const UserServicesPage = () => {
   const scoreRating = getScoreRating(userData?.creditScore);
 
   return (
-    <Container maxWidth="xl" sx={{ py: 3 }}>
+    <Container maxWidth="xl" sx={{ py: 3, bgcolor: 'background.default' }}>
       {/* Animated Gradient Header */}
       <Fade in={!loading} timeout={800}>
         <Box sx={{ 
@@ -181,9 +182,9 @@ const UserServicesPage = () => {
             p: 3,
             pt: 4,
             borderRadius: '0 0 12px 12px',
-            background: 'linear-gradient(145deg, #ffffff, #f8f9fa)',
-            border: '1px solid rgba(255,255,255,0.3)',
-            backdropFilter: 'blur(2px)'
+            bgcolor: 'background.paper',
+            border: '1px solid',
+            borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
           }}>
             <Box sx={{ 
               display: 'flex', 
@@ -241,7 +242,7 @@ const UserServicesPage = () => {
                         borderRadius: '12px',
                         width: '40px',
                         height: '40px',
-                        borderColor: 'rgba(0,0,0,0.1)',
+                        borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
                         color: 'text.secondary'
                       }}
                     />
@@ -257,7 +258,7 @@ const UserServicesPage = () => {
                         borderRadius: '12px',
                         width: '40px',
                         height: '40px',
-                        borderColor: 'rgba(0,0,0,0.1)',
+                        borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
                         color: 'text.secondary'
                       }}
                     />
@@ -274,7 +275,7 @@ const UserServicesPage = () => {
                         borderRadius: '12px',
                         width: '40px',
                         height: '40px',
-                        borderColor: 'rgba(0,0,0,0.1)',
+                        borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
                         color: 'text.secondary'
                       }}
                     />
@@ -314,11 +315,12 @@ const UserServicesPage = () => {
               borderRadius: 3, 
               height: '100%',
               borderLeft: '4px solid #4CAF50',
-              boxShadow: '0 4px 20px rgba(76, 175, 80, 0.15)',
+              boxShadow: theme.shadows[2],
               transition: 'transform 0.3s, box-shadow 0.3s',
+              bgcolor: 'background.paper',
               '&:hover': {
                 transform: 'translateY(-5px)',
-                boxShadow: '0 8px 25px rgba(76, 175, 80, 0.25)'
+                boxShadow: theme.shadows[4]
               }
             }}>
               <Typography variant="subtitle2" color="text.secondary" gutterBottom sx={{ 
@@ -344,7 +346,7 @@ const UserServicesPage = () => {
                     width: 90,
                     height: 90,
                     borderRadius: '50%',
-                    background: `conic-gradient(${scoreRating.color} 0% ${userData?.creditScore ? (userData.creditScore / 10) : 0}%, #eee ${userData?.creditScore ? (userData.creditScore / 10) : 0}% 100%)`,
+                    background: `conic-gradient(${scoreRating.color} 0% ${userData?.creditScore ? (userData.creditScore / 10) : 0}%, ${theme.palette.mode === 'dark' ? '#424242' : '#eee'} ${userData?.creditScore ? (userData.creditScore / 10) : 0}% 100%)`,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -362,13 +364,13 @@ const UserServicesPage = () => {
                       left: '3px'
                     }
                   }}>
-                    <Typography variant="h4" sx={{ fontWeight: 700 }}>
+                    <Typography variant="h4" sx={{ fontWeight: 700, color: 'text.primary' }}>
                       {userData?.creditScore || '--'}
                     </Typography>
                   </Box>
                 </motion.div>
                 <Box>
-                  <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>
+                  <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5, color: 'text.primary' }}>
                     {scoreRating.label}
                     <Box component="span" sx={{ 
                       ml: 1,
@@ -416,11 +418,12 @@ const UserServicesPage = () => {
               borderRadius: 3, 
               height: '100%',
               borderLeft: '4px solid #FF9800',
-              boxShadow: '0 4px 20px rgba(255, 152, 0, 0.15)',
+              boxShadow: theme.shadows[2],
               transition: 'transform 0.3s, box-shadow 0.3s',
+              bgcolor: 'background.paper',
               '&:hover': {
                 transform: 'translateY(-5px)',
-                boxShadow: '0 8px 25px rgba(255, 152, 0, 0.25)'
+                boxShadow: theme.shadows[4]
               }
             }}>
               <Typography variant="subtitle2" color="text.secondary" gutterBottom sx={{ 
@@ -531,14 +534,15 @@ const UserServicesPage = () => {
           p: 4, 
           mb: 4, 
           borderRadius: 3,
-          boxShadow: '0 8px 32px rgba(0,0,0,0.05)',
-          background: 'linear-gradient(to bottom, #ffffff, #f9fafb)',
-          border: '1px solid rgba(0,0,0,0.03)'
+          boxShadow: theme.shadows[2],
+          bgcolor: 'background.paper',
+          border: '1px solid',
+          borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'
         }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
             <Typography variant="h5" sx={{ 
               fontWeight: 700, 
-              color: '#2d3748',
+              color: 'text.primary',
               position: 'relative',
               display: 'inline-block',
               '&::after': {
@@ -585,11 +589,13 @@ const UserServicesPage = () => {
                       flexDirection: 'column',
                       borderRadius: 3,
                       overflow: 'hidden',
-                      boxShadow: '0 6px 15px rgba(0,0,0,0.08)',
+                      boxShadow: theme.shadows[1],
                       transition: 'all 0.3s ease',
-                      border: '1px solid rgba(0,0,0,0.03)',
+                      border: '1px solid',
+                      borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
+                      bgcolor: 'background.paper',
                       '&:hover': {
-                        boxShadow: '0 12px 20px rgba(0,0,0,0.12)'
+                        boxShadow: theme.shadows[4]
                       }
                     }}
                     elevation={0}
@@ -615,7 +621,7 @@ const UserServicesPage = () => {
                       <Typography variant="h6" sx={{ 
                         fontWeight: 600, 
                         mb: 1.5,
-                        color: '#2d3748'
+                        color: 'text.primary'
                       }}>
                         {service.title}
                       </Typography>
@@ -661,16 +667,17 @@ const UserServicesPage = () => {
         <Paper sx={{ 
           p: 4, 
           borderRadius: 3,
-          boxShadow: '0 8px 32px rgba(0,0,0,0.05)',
-          background: 'linear-gradient(to bottom, #f8f9fa, #ffffff)',
-          border: '1px solid rgba(0,0,0,0.03)',
+          boxShadow: theme.shadows[2],
+          bgcolor: 'background.paper',
+          border: '1px solid',
+          borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
           position: 'relative',
           overflow: 'hidden'
         }}>
           <Typography variant="h5" sx={{ 
             fontWeight: 700, 
             mb: 3,
-            color: '#2d3748'
+            color: 'text.primary'
           }}>
             Recent Activity
           </Typography>
@@ -679,9 +686,10 @@ const UserServicesPage = () => {
             alignItems: 'center', 
             justifyContent: 'center', 
             height: 200,
-            border: '2px dashed rgba(0, 0, 0, 0.08)',
+            border: '2px dashed',
+            borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
             borderRadius: 2,
-            backgroundColor: 'rgba(255,255,255,0.6)',
+            backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
             position: 'relative',
             overflow: 'hidden'
           }}>
@@ -691,13 +699,15 @@ const UserServicesPage = () => {
               left: 0,
               right: 0,
               height: '100%',
-              background: 'linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.03) 50%, rgba(0,0,0,0) 100%)',
+              background: theme.palette.mode === 'dark' 
+                ? 'linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.03) 50%, rgba(255,255,255,0) 100%)'
+                : 'linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.03) 50%, rgba(0,0,0,0) 100%)',
               animation: `${pulseAnimation} 2s ease-in-out infinite`
             }} />
             <Typography color="text.secondary" sx={{ 
               position: 'relative',
               zIndex: 1,
-              backgroundColor: 'rgba(255,255,255,0.7)',
+              backgroundColor: theme.palette.mode === 'dark' ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.7)',
               px: 2,
               py: 1,
               borderRadius: 1
