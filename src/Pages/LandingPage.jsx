@@ -45,10 +45,8 @@ const LandingPage = () => {
   const userData = JSON.parse(localStorage.getItem('userData'));
 
   const handleAdminButtonClick = () => {
-  // Simply navigate to the admin dashboard or login page
-  navigate('/admin/dashboard');
-};
-
+    navigate('/admin/dashboard');
+  };
 
   const features = [
     {
@@ -96,7 +94,7 @@ const LandingPage = () => {
   ];
 
   return (
-    <Box>
+    <Box sx={{ bgcolor: 'background.default' }}>
       {/* Hero Section */}
       <Box
         sx={{
@@ -219,7 +217,7 @@ const LandingPage = () => {
           variant="h4"
           align="center"
           gutterBottom
-          sx={{ fontWeight: 700, mb: 6 }}
+          sx={{ fontWeight: 700, mb: 6, color: 'text.primary' }}
         >
           Comprehensive Credit Solutions
         </Typography>
@@ -289,14 +287,15 @@ const LandingPage = () => {
                   '&:hover': {
                     transform: 'translateY(-5px)',
                     boxShadow: theme.shadows[6]
-                  }
+                  },
+                  bgcolor: 'background.paper'
                 }}
                 component={motion.div}
                 whileHover={{ scale: 1.01 }}
               >
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                   {feature.icon}
-                  <Typography variant="h5" sx={{ fontWeight: 600 }}>
+                  <Typography variant="h5" sx={{ fontWeight: 600, color: 'text.primary' }}>
                     {feature.title}
                   </Typography>
                 </Box>
@@ -304,13 +303,13 @@ const LandingPage = () => {
                   {feature.description}
                 </Typography>
                 <Box sx={{ 
-                  bgcolor: 'grey.50', 
+                  bgcolor: theme.palette.mode === 'dark' ? 'grey.800' : 'grey.50', 
                   p: 2, 
                   borderRadius: 1, 
                   mb: 2,
                   borderLeft: `3px solid ${feature.color}`
                 }}>
-                  <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                  <Typography variant="body2" sx={{ fontWeight: 500, color: 'text.primary' }}>
                     {feature.tip}
                   </Typography>
                 </Box>
@@ -322,7 +321,7 @@ const LandingPage = () => {
                     mt: 1,
                     color: feature.color,
                     '&:hover': {
-                      backgroundColor: 'rgba(0,0,0,0.05)'
+                      backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'
                     }
                   }}
                 >
@@ -335,11 +334,14 @@ const LandingPage = () => {
       </Container>
 
       {/* Advanced Analytics Section */}
-      <Box sx={{ py: 8, bgcolor: 'grey.50' }}>
+      <Box sx={{ 
+        py: 8, 
+        bgcolor: theme.palette.mode === 'dark' ? 'grey.900' : 'grey.50' 
+      }}>
         <Container maxWidth="lg">
           <Grid container spacing={6} alignItems="center">
             <Grid item xs={12} md={6}>
-              <Typography variant="h4" gutterBottom sx={{ fontWeight: 700 }}>
+              <Typography variant="h4" gutterBottom sx={{ fontWeight: 700, color: 'text.primary' }}>
                 Predictive Credit Analytics
               </Typography>
               <Typography color="text.secondary" sx={{ mb: 3 }}>
@@ -347,10 +349,10 @@ const LandingPage = () => {
                 and identify optimization opportunities before they appear on traditional reports.
               </Typography>
               <Box component="ul" sx={{ pl: 3, mb: 3 }}>
-                <li><Typography>90-day credit score forecasting</Typography></li>
-                <li><Typography>Personalized improvement roadmap</Typography></li>
-                <li><Typography>Credit opportunity alerts</Typography></li>
-                <li><Typography>Lender-specific approval predictors</Typography></li>
+                <li><Typography sx={{ color: 'text.primary' }}>90-day credit score forecasting</Typography></li>
+                <li><Typography sx={{ color: 'text.primary' }}>Personalized improvement roadmap</Typography></li>
+                <li><Typography sx={{ color: 'text.primary' }}>Credit opportunity alerts</Typography></li>
+                <li><Typography sx={{ color: 'text.primary' }}>Lender-specific approval predictors</Typography></li>
               </Box>
               <MotionButton
                 component={Link}
@@ -367,7 +369,7 @@ const LandingPage = () => {
               </MotionButton>
             </Grid>
             <Grid item xs={12} md={6}>
-              <Paper elevation={3} sx={{ p: 2, borderRadius: 3 }}>
+              <Paper elevation={3} sx={{ p: 2, borderRadius: 3, bgcolor: 'background.paper' }}>
                 <img 
                   src={IMG3} 
                   alt="Analytics Dashboard" 
@@ -408,7 +410,7 @@ const LandingPage = () => {
       {/* Footer */}
       <Box component="footer" sx={{ 
         py: 6, 
-        bgcolor: 'grey.900', 
+        bgcolor: theme.palette.mode === 'dark' ? 'grey.900' : 'grey.800', 
         color: 'white',
         borderTop: `1px solid ${theme.palette.divider}`
       }}>
