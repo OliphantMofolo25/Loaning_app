@@ -1,10 +1,49 @@
-import { Box, Button, Container, Grid, Typography, Paper, Divider, TextField } from '@mui/material';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Box, Button, Container, Grid, Typography, Paper, Divider, TextField, CircularProgress, Alert } from '@mui/material';
 import { Link } from 'react-router-dom';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import LockIcon from '@mui/icons-material/Lock';
 import EmailIcon from '@mui/icons-material/Email';
 
 const AdminLoginPage = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/admin/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Login failed');
+      }
+
+      // Save token and redirect
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('adminData', JSON.stringify(data.user));
+      navigate('/admin/dashboard');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Box sx={{ 
       minHeight: '100vh',
@@ -51,7 +90,13 @@ const AdminLoginPage = () => {
             height: '2px'
           }} />
           
-          <Box component="form" noValidate sx={{ mt: 1 }}>
+          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            {error && (
+              <Alert severity="error" sx={{ mb: 3 }}>
+                {error}
+              </Alert>
+            )}
+
             <TextField
               margin="normal"
               required
@@ -61,10 +106,10 @@ const AdminLoginPage = () => {
               name="email"
               autoComplete="email"
               autoFocus
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               InputProps={{
-                startAdornment: (
-                  <EmailIcon sx={{ color: '#adb5bd', mr: 1 }} />
-                ),
+                startAdornment: <EmailIcon sx={{ color: '#adb5bd', mr: 1 }} />,
               }}
               sx={{
                 '& .MuiOutlinedInput-root': {
@@ -94,10 +139,10 @@ const AdminLoginPage = () => {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               InputProps={{
-                startAdornment: (
-                  <LockIcon sx={{ color: '#adb5bd', mr: 1 }} />
-                ),
+                startAdornment: <LockIcon sx={{ color: '#adb5bd', mr: 1 }} />,
               }}
               sx={{
                 '& .MuiOutlinedInput-root': {
@@ -122,6 +167,7 @@ const AdminLoginPage = () => {
               type="submit"
               fullWidth
               variant="contained"
+              disabled={loading}
               sx={{
                 mt: 3,
                 mb: 2,
@@ -138,7 +184,7 @@ const AdminLoginPage = () => {
                 boxShadow: '0 6px 12px rgba(0, 0, 0, 0.3)'
               }}
             >
-              Sign In
+              {loading ? <CircularProgress size={24} color="inherit" /> : 'Sign In'}
             </Button>
             
             <Grid container justifyContent="flex-end">
@@ -179,4 +225,4 @@ const AdminLoginPage = () => {
   );
 };
 
-export default AdminLoginPage;
+export default AdminLoginPage; 

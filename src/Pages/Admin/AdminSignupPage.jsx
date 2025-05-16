@@ -1,4 +1,6 @@
-import { Box, Button, Container, Grid, Typography, Paper, Divider, TextField } from '@mui/material';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Box, Button, Container, Grid, Typography, Paper, Divider, TextField, CircularProgress, Alert } from '@mui/material';
 import { Link } from 'react-router-dom';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import LockIcon from '@mui/icons-material/Lock';
@@ -7,6 +9,68 @@ import PersonIcon from '@mui/icons-material/Person';
 import BadgeIcon from '@mui/icons-material/Badge';
 
 const AdminSignupPage = () => {
+  const [formData, setFormData] = useState({
+    fullName: '',
+    employeeId: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    setSuccess('');
+
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:3001/api/auth/admin/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fullName: formData.fullName,
+          employeeId: formData.employeeId,
+          email: formData.email,
+          password: formData.password
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Registration failed');
+      }
+
+      setSuccess('Registration successful! Redirecting to login...');
+      setTimeout(() => {
+        navigate('/admin/login');
+      }, 2000);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Box sx={{ 
       minHeight: '100vh',
@@ -53,7 +117,18 @@ const AdminSignupPage = () => {
             height: '2px'
           }} />
           
-          <Box component="form" noValidate sx={{ mt: 1 }}>
+          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            {error && (
+              <Alert severity="error" sx={{ mb: 3 }}>
+                {error}
+              </Alert>
+            )}
+            {success && (
+              <Alert severity="success" sx={{ mb: 3 }}>
+                {success}
+              </Alert>
+            )}
+
             <TextField
               margin="normal"
               required
@@ -63,10 +138,10 @@ const AdminSignupPage = () => {
               name="fullName"
               autoComplete="name"
               autoFocus
+              value={formData.fullName}
+              onChange={handleChange}
               InputProps={{
-                startAdornment: (
-                  <PersonIcon sx={{ color: '#adb5bd', mr: 1 }} />
-                ),
+                startAdornment: <PersonIcon sx={{ color: '#adb5bd', mr: 1 }} />,
               }}
               sx={{
                 '& .MuiOutlinedInput-root': {
@@ -94,10 +169,10 @@ const AdminSignupPage = () => {
               id="employeeId"
               label="Employee ID"
               name="employeeId"
+              value={formData.employeeId}
+              onChange={handleChange}
               InputProps={{
-                startAdornment: (
-                  <BadgeIcon sx={{ color: '#adb5bd', mr: 1 }} />
-                ),
+                startAdornment: <BadgeIcon sx={{ color: '#adb5bd', mr: 1 }} />,
               }}
               sx={{
                 '& .MuiOutlinedInput-root': {
@@ -126,10 +201,10 @@ const AdminSignupPage = () => {
               label="Email Address"
               name="email"
               autoComplete="email"
+              value={formData.email}
+              onChange={handleChange}
               InputProps={{
-                startAdornment: (
-                  <EmailIcon sx={{ color: '#adb5bd', mr: 1 }} />
-                ),
+                startAdornment: <EmailIcon sx={{ color: '#adb5bd', mr: 1 }} />,
               }}
               sx={{
                 '& .MuiOutlinedInput-root': {
@@ -159,10 +234,10 @@ const AdminSignupPage = () => {
               type="password"
               id="password"
               autoComplete="new-password"
+              value={formData.password}
+              onChange={handleChange}
               InputProps={{
-                startAdornment: (
-                  <LockIcon sx={{ color: '#adb5bd', mr: 1 }} />
-                ),
+                startAdornment: <LockIcon sx={{ color: '#adb5bd', mr: 1 }} />,
               }}
               sx={{
                 '& .MuiOutlinedInput-root': {
@@ -191,10 +266,10 @@ const AdminSignupPage = () => {
               label="Confirm Password"
               type="password"
               id="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
               InputProps={{
-                startAdornment: (
-                  <LockIcon sx={{ color: '#adb5bd', mr: 1 }} />
-                ),
+                startAdornment: <LockIcon sx={{ color: '#adb5bd', mr: 1 }} />,
               }}
               sx={{
                 '& .MuiOutlinedInput-root': {
@@ -219,6 +294,7 @@ const AdminSignupPage = () => {
               type="submit"
               fullWidth
               variant="contained"
+              disabled={loading}
               sx={{
                 mt: 3,
                 mb: 2,
@@ -235,7 +311,7 @@ const AdminSignupPage = () => {
                 boxShadow: '0 6px 12px rgba(0, 0, 0, 0.3)'
               }}
             >
-              Create Account
+              {loading ? <CircularProgress size={24} color="inherit" /> : 'Create Account'}
             </Button>
             
             <Grid container justifyContent="flex-end">
