@@ -281,6 +281,8 @@ const LandingPage = () => {
                 sx={{
                   p: 3,
                   height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
                   borderTop: '4px solid',
                   borderColor: feature.color,
                   transition: 'all 0.3s',
@@ -299,34 +301,19 @@ const LandingPage = () => {
                     {feature.title}
                   </Typography>
                 </Box>
-                <Typography color="text.secondary" sx={{ mb: 2 }}>
+                <Typography color="text.secondary" sx={{ mb: 2, flexGrow: 1 }}>
                   {feature.description}
                 </Typography>
                 <Box sx={{ 
                   bgcolor: theme.palette.mode === 'dark' ? 'grey.800' : 'grey.50', 
                   p: 2, 
-                  borderRadius: 1, 
-                  mb: 2,
+                  borderRadius: 1,
                   borderLeft: `3px solid ${feature.color}`
                 }}>
                   <Typography variant="body2" sx={{ fontWeight: 500, color: 'text.primary' }}>
                     {feature.tip}
                   </Typography>
                 </Box>
-                <Button 
-                  variant="text" 
-                  color="inherit"
-                  endIcon={<ArrowForward />}
-                  sx={{ 
-                    mt: 1,
-                    color: feature.color,
-                    '&:hover': {
-                      backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'
-                    }
-                  }}
-                >
-                  Learn more
-                </Button>
               </Paper>
             </Grid>
           ))}
