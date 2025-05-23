@@ -2,41 +2,76 @@ import React, { useState, useEffect } from 'react';
 import { 
   Box, Typography, Container, Paper, 
   CircularProgress, Grid, Button, Divider,
-  Card, CardContent, LinearProgress, Tooltip
+  Card, CardContent, LinearProgress, Tooltip,
+  Snackbar, Alert
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaInfoCircle } from 'react-icons/fa';
+import axios from 'axios';
 
 const CreditScoreAnalysisPage = () => {
   const navigate = useNavigate();
   const [scoreData, setScoreData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: 'success'
+  });
+
+  const fetchScoreData = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get('/api/credit-score', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      setScoreData(response.data);
+      setError(null);
+    } catch (err) {
+      console.error('Error fetching score data:', err);
+      setError(err.response?.data?.message || 'Failed to fetch credit score');
+      setSnackbar({
+        open: true,
+        message: err.response?.data?.message || 'Failed to fetch credit score',
+        severity: 'error'
+      });
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  const refreshScore = async () => {
+    try {
+      setRefreshing(true);
+      const response = await axios.post('/api/credit-score/refresh', {}, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      setScoreData(response.data);
+      setSnackbar({
+        open: true,
+        message: 'Credit score refreshed successfully',
+        severity: 'success'
+      });
+    } catch (err) {
+      console.error('Error refreshing score:', err);
+      setSnackbar({
+        open: true,
+        message: err.response?.data?.message || 'Failed to refresh credit score',
+        severity: 'error'
+      });
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   useEffect(() => {
-    // Simulate API call
-    const fetchScoreData = async () => {
-      try {
-        // In a real app, you would fetch from your backend
-        const mockData = {
-          score: 725,
-          factors: [
-            { name: 'Payment History', value: 35, impact: 'High' },
-            { name: 'Credit Utilization', value: 30, impact: 'High' },
-            { name: 'Credit Age', value: 15, impact: 'Medium' },
-            { name: 'Credit Mix', value: 10, impact: 'Medium' },
-            { name: 'New Credit', value: 10, impact: 'Low' },
-          ],
-          lastUpdated: new Date().toISOString(),
-          nextUpdate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
-        };
-        setScoreData(mockData);
-      } catch (error) {
-        console.error('Error fetching score data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchScoreData();
   }, []);
 
@@ -48,11 +83,46 @@ const CreditScoreAnalysisPage = () => {
     return '#F44336';
   };
 
-  if (loading) {
+  const handleCloseSnackbar = () => {
+    setSnackbar(prev => ({ ...prev, open: false }));
+  };
+
+  if (loading && !refreshing) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
         <CircularProgress size={60} />
       </Box>
+    );
+  }
+
+  if (error && !scoreData) {
+    return (
+      <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+          <Button
+            startIcon={<FaArrowLeft />}
+            onClick={() => navigate(-1)}
+            sx={{ mr: 2 }}
+          >
+            Back
+          </Button>
+          <Typography variant="h4" sx={{ fontWeight: 600 }}>
+            Credit Score Analysis
+          </Typography>
+        </Box>
+        <Paper sx={{ p: 3, textAlign: 'center' }}>
+          <Typography color="error" variant="h6">
+            {error}
+          </Typography>
+          <Button 
+            variant="contained" 
+            onClick={fetchScoreData}
+            sx={{ mt: 2 }}
+          >
+            Retry
+          </Button>
+        </Paper>
+      </Container>
     );
   }
 
@@ -81,8 +151,12 @@ const CreditScoreAnalysisPage = () => {
               Last updated: {new Date(scoreData.lastUpdated).toLocaleDateString()}
             </Typography>
           </Box>
-          <Button variant="outlined">
-            Refresh Score
+          <Button 
+            variant="outlined" 
+            onClick={refreshScore}
+            disabled={refreshing}
+          >
+            {refreshing ? <CircularProgress size={24} /> : 'Refresh Score'}
           </Button>
         </Box>
 
@@ -210,6 +284,21 @@ const CreditScoreAnalysisPage = () => {
           </Grid>
         </Box>
       </Paper>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert 
+          onClose={handleCloseSnackbar} 
+          severity={snackbar.severity}
+          sx={{ width: '100%' }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };
